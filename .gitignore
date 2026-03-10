@@ -1,3 +1,4 @@
 .env
 .cursor/*
 !.cursor/rules/
+!.cursor/plans/
