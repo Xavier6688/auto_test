@@ -1,0 +1,9 @@
+server:
+  port: "8080"
+database:
+  host: "YOUR_SERVER_IP"
+  port: "5432"
+  user: "db_user"
+  password: "db_password"
+  dbname: "autotest_db"
+  ...

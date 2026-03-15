@@ -21,6 +21,7 @@ Thumbs.db
 # ===== Go =====
 backend/vendor/
 backend/tmp/
+backend/config.yaml
 *.exe
 *.exe~
 *.dll
