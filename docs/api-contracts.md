@@ -692,6 +692,15 @@ Authorization: Bearer <jwt_token>
 | GET | `/projects/:pid/reports` | 项目报告列表 |
 | GET | `/projects/:pid/reports/trend` | 通过率趋势图数据 |
 
+#### Bug 管理
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/projects/:pid/bugs` | Bug 列表（支持按 status/external_system/ai_category 筛选） |
+| GET | `/bugs/:id` | Bug 详情（含 AI 分析、关联执行结果） |
+| PUT | `/bugs/:id` | 更新 Bug 状态 |
+| POST | `/bugs/:id/sync` | 同步外部系统状态（从 JIRA/GitLab 拉取最新状态） |
+
 #### Webhook
 
 | 方法 | 路径 | 说明 |

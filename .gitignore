@@ -1,4 +1,62 @@
+# ===== 环境变量（含敏感信息，禁止提交） =====
 .env
+deploy/.env
+
+# ===== Cursor IDE =====
 .cursor/*
 !.cursor/rules/
 !.cursor/plans/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ===== Go =====
+backend/vendor/
+backend/tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# ===== Node.js =====
+node_modules/
+dist/
+.next/
+*.tsbuildinfo
+
+# ===== Protobuf 生成代码 =====
+backend/internal/grpcclient/pb/*.pb.go
+ai_service/app/grpc_server/generated/*_pb2.py
+ai_service/app/grpc_server/generated/*_pb2_grpc.py
+
+# ===== Docker =====
+*.log
+
+# ===== 测试产物 =====
+allure-results/
+allure-report/
+test-results/

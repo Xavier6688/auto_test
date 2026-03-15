@@ -1,71 +1,72 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:16
+    image: postgres:16-alpine
     container_name: autotest-postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:-autotest}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-autotest_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-autotest}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-autotest}"]
       interval: 10s
       timeout: 5s
       retries: 5
+
   redis:
     image: redis:7-alpine
     container_name: autotest-redis
     ports:
-      - '6379:6379'
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD:-autotest_dev}
     volumes:
       - redis_data:/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-autotest_dev}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+
   rabbitmq:
-    image: rabbitmq:3.13-management
+    image: rabbitmq:3.13-management-alpine
     container_name: autotest-rabbitmq
     ports:
-      - '5672:5672'
-      - '15672:15672'
+      - "5672:5672"
+      - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-autotest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-autotest_dev}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 10s
       retries: 5
+
   minio:
     image: minio/minio:latest
     container_name: autotest-minio
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000"
+      - "9001:9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-autotest}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-autotest_dev}
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 10s
       retries: 5
 
 volumes:
@@ -73,8 +74,4 @@ volumes:
   redis_data:
   rabbitmq_data:
   minio_data:
-
-networks:
-  autotest_network:
-    driver: bridge
 
